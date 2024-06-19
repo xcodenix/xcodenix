@@ -13,7 +13,6 @@
     "@antv/g2": "^5.1.21",
     "@antv/g2-extension-plot": "^0.2.0",
     "@antv/s2": "^1.55.6",
-    "@antv/s2-vue": "^1.7.1",
     "@iconify-json/heroicons": "^1.1.20",
     "@iconify-json/simple-icons": "^1.1.100",
     "vue3-smooth-dnd": "^0.0.6"

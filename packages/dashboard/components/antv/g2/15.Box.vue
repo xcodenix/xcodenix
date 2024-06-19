@@ -21,7 +21,7 @@ const data = [
   { x: 'West Europe', y: [1, 7, 10, 17, 22] },
   { x: 'West Africa', y: [1, 6, 8, 13, 16] }
 ]
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart
     .box()
     .data(data)

@@ -22,7 +22,7 @@ const data = [
   { year: '1998', value: 9 },
   { year: '1999', value: 13 }
 ]
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart
     .data(data)
     .encode('x', 'year')
