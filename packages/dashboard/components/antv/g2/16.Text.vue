@@ -17,7 +17,7 @@ const paragraph = [
   'Circumambulate the city of a dreamy Sabbath afternoon. Go from Corlears Hook to Coenties Slip, and from thence, by Whitehall, northward. What do you see?—Posted like silent sentinels all around the town, stand thousands upon thousands of mortal men fixed in ocean reveries. Some leaning against the spiles; some seated upon the pier-heads; some looking over the bulwarks of ships from China; some high aloft in the rigging, as if striving to get a still better seaward peep. But these are all landsmen; of week days pent up in lath and plaster—tied to counters, nailed to benches, clinched to desks. How then is this? Are the green fields gone? What do they here?'
 ].map((text, idx) => ({ idx, text }))
 
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart.data(paragraph)
 
   chart

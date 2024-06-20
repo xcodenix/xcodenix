@@ -19,7 +19,7 @@ const data = [
   { item: '事例五', count: 9, percent: 0.09 }
 ]
 type Data = typeof data[0]
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart.coordinate({ type: 'theta', outerRadius: 0.8 })
   chart
     .interval()

@@ -28,7 +28,7 @@ const axis = {
   tickStroke: 'black',
   lineLineWidth: 1
 }
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart.coordinate({ type: 'parallel' })
 
   chart

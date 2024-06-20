@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-const { container: line } = useRender((chart) => {
+const { container: line } = useChartRender((chart) => {
   const data = [
     264, 417, 438, 887, 309, 397, 550, 575, 563, 430, 525, 592, 492, 467, 513,
     546, 983, 340, 539, 243, 226, 192
@@ -64,7 +64,7 @@ const { container: line } = useRender((chart) => {
     render: (e: any, { _title, items }: Record<'_title' | 'items', any>) => items[0].value
   })
 })
-const { container: area } = useRender((chart) => {
+const { container: area } = useChartRender((chart) => {
   const data = [
     264, 417, 438, 887, 309, 397, 550, 575, 563, 430, 525, 592, 492, 467, 513,
     546, 983, 340, 539, 243, 226, 192
@@ -89,7 +89,7 @@ const { container: area } = useRender((chart) => {
     render: (e: any, { _title, items }: Record<'_title' | 'items', any>) => items[0].value
   })
 })
-const { container: column } = useRender((chart) => {
+const { container: column } = useChartRender((chart) => {
   const data = [
     264, 417, 438, 887, 309, 397, 550, 575, 563, 430, 525, 592, 492, 467, 513,
     546, 983, 340, 539, 243, 226, 192
@@ -119,7 +119,7 @@ const { container: column } = useRender((chart) => {
     render: (e: any, { _title, items }: Record<'_title' | 'items', any>) => items[0].value
   })
 })
-const { container: pie } = useRender((chart) => {
+const { container: pie } = useChartRender((chart) => {
   chart.coordinate({ type: 'theta' })
 
   chart
@@ -145,7 +145,7 @@ const { container: pie } = useRender((chart) => {
     render: (e: any, { _title, items }: Record<'_title' | 'items', any>) => items[0].value
   })
 })
-const { container: progress } = useRender((chart) => {
+const { container: progress } = useChartRender((chart) => {
   const progress = 0.7
   chart.coordinate({
     transform: [{ type: 'transpose' }]
@@ -172,7 +172,7 @@ const { container: progress } = useRender((chart) => {
 
   chart.interaction('tooltip', false)
 })
-const { container: ring } = useRender((chart) => {
+const { container: ring } = useChartRender((chart) => {
   const progress = 0.7
 
   chart.coordinate({ type: 'theta', innerRadius: 0.7 })

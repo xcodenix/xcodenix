@@ -21,7 +21,7 @@ const data = [
   { time: '10:40', call: 13, waiting: 1, people: 2 }
 ]
 
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart.data(data)
 
   chart

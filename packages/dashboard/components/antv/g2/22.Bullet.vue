@@ -19,7 +19,7 @@ const data = [
     target: 85
   }
 ]
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart.coordinate({ transform: [{ type: 'transpose' }] })
 
   chart.data(data)

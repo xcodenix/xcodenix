@@ -33,7 +33,7 @@ const data = [
   { item: 'UX', type: 'a', score: 50 },
   { item: 'UX', type: 'b', score: 60 }
 ]
-const { container } = useRender((chart) => {
+const { container } = useChartRender((chart) => {
   chart.coordinate({ type: 'polar' })
 
   chart
