@@ -9,13 +9,5 @@ export default defineNuxtConfig({
       minify: 'esbuild',
       cssMinify: 'esbuild'
     }
-  },
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
-    }
   }
 })
