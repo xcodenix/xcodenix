@@ -6,7 +6,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "prepare": "nuxt prepare"
   },
   "dependencies": {
     "@antv/g2": "^5.1.21",
