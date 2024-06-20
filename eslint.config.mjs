@@ -6,7 +6,6 @@ export default withNuxt({
     '@typescript-eslint/no-explicit-any': 'off',
     'vue/multi-word-component-names': 'off',
     '@typescript-eslint/ban-types': 'off',
-    '@stylistic/max-statements-per-line': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn'
   }
 })
