@@ -1,4 +1,6 @@
-import { PivotSheet, S2Event, TableSheet, type Pagination, type S2DataConfig, type S2MountContainer, type S2Options, type TooltipContentType } from '@antv/s2'
+import type { ThemeCfg, Pagination, S2DataConfig, S2MountContainer, S2Options, TooltipContentType } from '@antv/s2'
+import { getPalette, generatePalette, PivotSheet, S2Event, TableSheet } from '@antv/s2'
+import { type ColorInput } from '@ctrl/tinycolor'
 
 export type SheetType =
   | 'pivot'
@@ -25,11 +27,25 @@ export function useSheetRender(sheetType: SheetType = 'pivot') {
   const options = ref<S2Options<TooltipContentType, Pagination, string | Element, string>>()
   const s2 = ref<PivotSheet | TableSheet>()
   const hasRendered = ref(false)
+  const themeCfg = ref<ThemeCfg>()
+  const colors = ref<ColorInput>()
+  const colorMode = useColorMode()
 
   async function renderSheet() {
     if (hasRendered.value) return
     s2.value = useSheet(sheetType, container.value!, dataCfg.value!, options.value!)
     await s2.value.render()
+    if (colors.value) {
+      await setThemeCfg()
+    } else {
+      if (colorMode.value != 'dark') {
+        s2.value!.setThemeCfg({ name: 'default' })
+        await s2.value?.render(false)
+      } else {
+        s2.value!.setThemeCfg({ name: 'colorful', palette: generatePalette({ ...getPalette('colorful'), brandColor: '#000000' }) })
+        await s2.value?.render(false)
+      }
+    }
     hasRendered.value = true
   }
 
@@ -39,8 +55,37 @@ export function useSheetRender(sheetType: SheetType = 'pivot') {
     await s2.value.render(false)
   }
 
+  watch(colors, async () => {
+    await setThemeCfg()
+  })
+
+  watch(colorMode, async (newVal) => {
+    if (!colors.value) {
+      if (newVal.value != 'dark') {
+        s2.value!.setThemeCfg({ name: 'default' })
+        await s2.value?.render(false)
+      } else {
+        s2.value!.setThemeCfg({ name: 'colorful', palette: generatePalette({ ...getPalette('colorful'), brandColor: '#000000' }) })
+        await s2.value?.render(false)
+      }
+    }
+  })
+
+  async function setThemeCfg() {
+    const palette = getPalette('colorful')
+    const newPalette = generatePalette({
+      ...palette,
+      brandColor: typeof colors.value === 'string' ? colors.value : (colors.value as any).hex
+    })
+    themeCfg.value = {
+      name: 'colorful',
+      palette: newPalette
+    }
+    s2.value?.setThemeCfg(themeCfg.value)
+    await s2.value?.render(false)
+  }
+
   function createObserver() {
-    console.log(container.value)
     observer.value = new IntersectionObserver(([size]) => {
       if (size.isIntersecting)
         requestIdleCallback(async () => await renderSheet())
@@ -69,6 +114,6 @@ export function useSheetRender(sheetType: SheetType = 'pivot') {
     })
   })
   return {
-    container, dataCfg, options, rendered: readonly(hasRendered)
+    container, dataCfg, colors, options, s2, rendered: readonly(hasRendered)
   }
 }

@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "prepare:nuxt": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "nuxt typecheck",
@@ -15,12 +15,10 @@
   },
   "dependencies": {
     "vue": "^3.4.21",
-    "vue-color": "^2.8.1",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.3.9",
-    "@types/vue-color": "^2.4.8",
     "@vueuse/nuxt": "^10.9.0",
     "eslint": "^9.1.1",
     "husky": "^9.0.11",
