@@ -1,12 +1,8 @@
 <template>
   <div>
     <NuxtLoadingIndicator />
-
     <NuxtLayout>
-      <NuxtPage />
+      <NuxtPage page-key="dashboard" />
     </NuxtLayout>
-
-    <UNotifications />
-    <UModals />
   </div>
 </template>
