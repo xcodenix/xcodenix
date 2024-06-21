@@ -14,6 +14,7 @@ export function useChartRender(hook?: (chartInstance: ReturnType<typeof useChart
   const container = ref<HTMLElement>()
   const hasRendered = ref(false)
   const observer = ref<IntersectionObserver>()
+  const colorMode = useColorMode()
   let chartInstance: ReturnType<typeof useChart>
   const renderChart = () => {
     if (hasRendered.value) return
@@ -30,14 +31,18 @@ export function useChartRender(hook?: (chartInstance: ReturnType<typeof useChart
     if (chartInstance) {
       chartInstance.density()
     }
-    observer.value = new IntersectionObserver(([size]) => {
-      if (size.isIntersecting)
+    observer.value = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting)
         requestIdleCallback(() => renderChart())
     }, {
       threshold: [0, 0.25, 0.5, 0.75, 1]
     })
     observer.value.observe(container.value!)
   }
+  //TODO: Set chart Theme
+  watch(colorMode, () => {
+
+  })
   onMounted(() => {
     createObserver()
   })

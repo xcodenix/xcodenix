@@ -24,10 +24,4 @@ const components = computed(() => {
     return parseInt(a[0].match(/\/(\d+)\./)![1], 10) - parseInt(b[0].match(/\/(\d+)\./)![1], 10)
   })
 })
-
-const colorMode = useColorMode()
-const router = useRouter()
-watch(colorMode, () => {
-  router.go(0)
-})
 </script>
