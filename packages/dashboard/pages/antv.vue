@@ -1,3 +1,3 @@
 <template>
-  <NuxtPage />
+  <NuxtPage page-key="antv" />
 </template>
