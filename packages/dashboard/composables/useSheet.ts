@@ -1,5 +1,5 @@
 import type { ThemeCfg, Pagination, S2DataConfig, S2MountContainer, S2Options, TooltipContentType } from '@antv/s2'
-import { getPalette, generatePalette, PivotSheet, S2Event, TableSheet } from '@antv/s2'
+import { getPalette, generatePalette, PivotSheet, TableSheet } from '@antv/s2'
 import { type ColorInput } from '@ctrl/tinycolor'
 
 export type SheetType =
@@ -14,22 +14,28 @@ export function useSheet(sheetType: SheetType, dom: S2MountContainer, dataCfg: S
     case 'pivot':
       return new PivotSheet(dom, dataCfg, options)
     case 'table':
+      options.height = options.height
+        || typeof dom === 'string'
+        ? Number(document.querySelector(dom as string)?.parentElement?.clientHeight) - Number(document.querySelector(dom as string)?.previousElementSibling?.clientHeight)
+        : Number(dom.parentElement?.clientHeight) - Number(dom.previousElementSibling?.clientHeight)
       return new TableSheet(dom, dataCfg, options)
     default:
       throw new Error('sheet type is not supported')
   }
 }
+
+/**
+ * Render the Sheet table
+ */
 export function useSheetRender(sheetType: SheetType = 'pivot') {
   const container = ref<HTMLElement>()
-  const observer = ref<IntersectionObserver>()
-  const resizeObserver = ref<ResizeObserver>()
   const dataCfg = ref<S2DataConfig>()
   const options = ref<S2Options<TooltipContentType, Pagination, string | Element, string>>()
   const s2 = ref<PivotSheet | TableSheet>()
   const hasRendered = ref(false)
-  const themeCfg = ref<ThemeCfg>()
   const colors = ref<ColorInput>()
   const colorMode = useColorMode()
+  const { createObserver, createResizeObserver } = useObserver()
 
   async function renderSheet() {
     if (hasRendered.value) return
@@ -55,23 +61,8 @@ export function useSheetRender(sheetType: SheetType = 'pivot') {
     await s2.value.render(false)
   }
 
-  watch(colors, async () => {
-    await setThemeCfg()
-  })
-
-  watch(colorMode, async (newVal) => {
-    if (!colors.value) {
-      if (newVal.value != 'dark') {
-        s2.value!.setThemeCfg({ name: 'default' })
-        await s2.value?.render(false)
-      } else {
-        s2.value!.setThemeCfg({ name: 'colorful', palette: generatePalette({ ...getPalette('colorful'), brandColor: '#000000' }) })
-        await s2.value?.render(false)
-      }
-    }
-  })
-
   async function setThemeCfg() {
+    const themeCfg = ref<ThemeCfg>()
     const palette = getPalette('colorful')
     const newPalette = generatePalette({
       ...palette,
@@ -85,34 +76,36 @@ export function useSheetRender(sheetType: SheetType = 'pivot') {
     await s2.value?.render(false)
   }
 
-  function createObserver() {
-    observer.value = new IntersectionObserver(([size]) => {
-      if (size.isIntersecting)
-        requestIdleCallback(async () => await renderSheet())
+  // custom theme
+  watch(colors, async () => {
+    await setThemeCfg()
+  })
+
+  // feat color mode changes
+  watch(colorMode, async (newVal) => {
+    if (!colors.value) {
+      if (newVal.value != 'dark') {
+        s2.value!.setThemeCfg({ name: 'default' })
+        await s2.value?.render(false)
+      } else {
+        s2.value!.setThemeCfg({ name: 'colorful', palette: generatePalette({ ...getPalette('colorful'), brandColor: '#000000' }) })
+        await s2.value?.render(false)
+      }
+    }
+  })
+
+  onMounted(() => {
+    createObserver(container.value!, () => {
+      renderSheet()
     }, {
       threshold: [0, 0.25, 0.5, 0.75, 1]
     })
-    observer.value.observe(container.value!)
-  }
-
-  function createResizeObserver() {
-    resizeObserver.value = new ResizeObserver(async ([entry] = []) => {
+    createResizeObserver(container.value!, async ([entry]) => {
       const [size] = entry.borderBoxSize || []
       await changeSheetSize(size)
     })
-    resizeObserver.value.observe(container.value!)
-  }
+  })
 
-  onMounted(async () => {
-    createObserver()
-    createResizeObserver()
-  })
-  onUnmounted(() => {
-    observer.value?.disconnect()
-    s2.value!.on(S2Event.LAYOUT_DESTROY, () => {
-      resizeObserver.value?.disconnect()
-    })
-  })
   return {
     container, dataCfg, colors, options, s2, rendered: readonly(hasRendered)
   }

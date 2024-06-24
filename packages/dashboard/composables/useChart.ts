@@ -10,44 +10,35 @@ export const useChart = (options?: RuntimeOptions) => {
   return new Chart(options)
 }
 
-export function useChartRender(hook?: (chartInstance: ReturnType<typeof useChart>) => void) {
+export function useChartRender(hook?: (chart: ReturnType<typeof useChart>) => void) {
   const container = ref<HTMLElement>()
   const hasRendered = ref(false)
-  const observer = ref<IntersectionObserver>()
   const colorMode = useColorMode()
-  let chartInstance: ReturnType<typeof useChart>
-  const renderChart = () => {
+  const { createObserver } = useObserver()
+
+  // bug G2 Instance use ref 
+  const renderChart = async () => {
     if (hasRendered.value) return
-    chartInstance = useChart({
+    const g2: ReturnType<typeof useChart> = useChart({
       container: container.value!,
       autoFit: true
     })
     if (hook)
-      hook(chartInstance)
-    chartInstance.render()
+      hook(g2)
+    await g2.render()
     hasRendered.value = true
   }
-  const createObserver = () => {
-    if (chartInstance) {
-      chartInstance.density()
-    }
-    observer.value = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting)
-        requestIdleCallback(() => renderChart())
-    }, {
-      threshold: [0, 0.25, 0.5, 0.75, 1]
-    })
-    observer.value.observe(container.value!)
-  }
+
   //TODO: Set chart Theme
   watch(colorMode, () => {
 
   })
   onMounted(() => {
-    createObserver()
-  })
-  onUnmounted(() => {
-    observer.value?.disconnect()
+    createObserver(container.value!, async () => {
+      await renderChart()
+    }, {
+      threshold: 0.75
+    })
   })
 
   return {

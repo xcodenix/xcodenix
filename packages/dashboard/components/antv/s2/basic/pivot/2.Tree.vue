@@ -11,7 +11,6 @@
 const { container, dataCfg, options } = useSheetRender()
 dataCfg.value = await $fetch('https://gw.alipayobjects.com/os/bmw-prod/2a5dbbc8-d0a7-4d02-b7c9-34f6ca63cff6.json')
 options.value = {
-  height: 400,
   hierarchyType: 'tree',
   style: {
     collapsedRows: {

@@ -38,7 +38,6 @@ dataCfg.value = {
   data: await $fetch('https://assets.antv.antgroup.com/s2/basic-table-mode.json')
 }
 options.value = {
-  height: 400,
   showSeriesNumber: true,
   placeholder: (_meta) => {
     return '-'
