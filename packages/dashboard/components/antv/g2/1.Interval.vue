@@ -3,10 +3,7 @@
     <div class="text-center text-sm font-semibold">
       简单柱形图
     </div>
-    <div
-      ref="container"
-      class="h-full"
-    />
+    <div ref="container" class="h-full" />
   </div>
 </template>
 

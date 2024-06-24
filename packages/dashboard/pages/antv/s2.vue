@@ -7,7 +7,7 @@
       >
         <component
           :is="component"
-          class="col-span-1"
+          class="col-span-1 h-96"
         />
       </template>
     </div>

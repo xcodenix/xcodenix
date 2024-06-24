@@ -38,7 +38,6 @@ dataCfg.value = {
 }
 
 options.value = {
-  height: 400,
   hierarchyType: 'grid',
   interaction: {
     enableCopy: true,
