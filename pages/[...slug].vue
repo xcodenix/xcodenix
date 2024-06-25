@@ -1,5 +1,5 @@
 <template>
   <div>
-    Dashboard Index
+    XCodenix
   </div>
 </template>
